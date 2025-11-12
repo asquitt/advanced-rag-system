@@ -1,0 +1,6 @@
+# Core
+sentence-transformers==2.3.1
+numpy==1.26.3
+
+# Testing
+pytest==7.4.4
