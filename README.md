@@ -530,7 +530,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 **Your Name** - [LinkedIn](https://linkedin.com/in/demario-asquitt) | [Email](mailto:demarioasquitt@gmail.com)
 
-**Project Link**: [https://github.com/yourusername/advanced-rag-system](https://github.com/asquitt/advanced-rag-system)
+**Project Link**: [https://github.com/asquitt/advanced-rag-system](https://github.com/asquitt/advanced-rag-system)
 
 ---
 
