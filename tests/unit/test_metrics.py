@@ -115,11 +115,11 @@ class TestMeanReciprocalRank:
         retrieved_lists = [
             ["doc1", "doc2", "doc3"],  # relevant at position 1
             ["doc4", "doc5", "doc1"],  # relevant at position 3
-            ["doc2", "doc1", "doc3"],  # relevant at position 2
+            ["doc2", "doc1", "doc3"],  # relevant at position 3
         ]
         relevant_sets = [{"doc1", "doc4"}, {"doc1", "doc2"}, {"doc3", "doc5"}]
-        # RR: 1/1 + 1/3 + 1/1 = 2.333... / 3 = 0.777...
-        expected_mrr = (1.0 + 1 / 3 + 1.0) / 3
+        # RR: 1/1 + 1/3 + 1/3 = 1.666... / 3 = 0.555...
+        expected_mrr = (1.0 + 1 / 3 + 1 / 3) / 3
         assert mean_reciprocal_rank(retrieved_lists, relevant_sets) == pytest.approx(
             expected_mrr
         )
@@ -158,9 +158,9 @@ class TestNDCGAtK:
         relevant = {"doc1", "doc3", "doc6"}
         score = ndcg_at_k(retrieved, relevant, 5)
         # DCG: 1/log2(2) + 1/log2(4) = 1.0 + 0.5 = 1.5
-        # IDCG: 1/log2(2) + 1/log2(3) = 1.0 + 0.630... = 1.630...
+        # IDCG: min(3, 5)=3 positions: 1/log2(2) + 1/log2(3) + 1/log2(4)
         expected_dcg = 1.0 / np.log2(2) + 1.0 / np.log2(4)
-        expected_idcg = 1.0 / np.log2(2) + 1.0 / np.log2(3)
+        expected_idcg = 1.0 / np.log2(2) + 1.0 / np.log2(3) + 1.0 / np.log2(4)
         expected_ndcg = expected_dcg / expected_idcg
         assert score == pytest.approx(expected_ndcg)
 
@@ -189,9 +189,12 @@ class TestNDCGAtK:
         relevant = {"doc1", "doc2", "doc4", "doc5", "doc6"}
         # k=3, but 5 relevant docs
         # DCG: 1/log2(2) + 1/log2(3) = 1.630...
-        # IDCG: same (only 3 positions available)
+        # IDCG: min(5, 3)=3 positions: 1/log2(2) + 1/log2(3) + 1/log2(4)
         score = ndcg_at_k(retrieved, relevant, 3)
-        assert score == pytest.approx(1.0)
+        expected_dcg = 1.0 / np.log2(2) + 1.0 / np.log2(3)
+        expected_idcg = 1.0 / np.log2(2) + 1.0 / np.log2(3) + 1.0 / np.log2(4)
+        expected_ndcg = expected_dcg / expected_idcg
+        assert score == pytest.approx(expected_ndcg)
 
     def test_ndcg_k_zero(self):
         """Test with k=0."""
