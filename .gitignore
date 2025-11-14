@@ -38,10 +38,10 @@ models/
 *.log
 logs/
 
-# Environment
-.env
-.env.local
-.env.*.local
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
 
 # Environment
 .env
